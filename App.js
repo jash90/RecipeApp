@@ -6,7 +6,6 @@ import Recipes from './src/scenes/Recipes';
 import Login from './src/scenes/Login';
 import Register from './src/scenes/Register';
 import Profile from './src/scenes/Profile';
-import Recipe from './src/scenes/Recipe';
 import AddRecipe from './src/scenes/AddRecipe';
 export default class App extends Component {
   render() {
@@ -18,7 +17,6 @@ export default class App extends Component {
             <Scene key="Login" component={Login} hideNavBar/>
             <Scene key="Register" component={Register} hideNavBar/>
             <Scene key="Profile" component={Profile} hideNavBar/>
-            <Scene key="Recipe" component={Recipe} hideNavBar/>
             <Scene key="AddRecipe" component={AddRecipe} hideNavBar/>
           </Stack>
         </Router>
