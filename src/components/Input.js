@@ -20,6 +20,7 @@ export default class Input extends Component {
 const styles = StyleSheet.create({
   textInputStyle: {
     borderRadius: 20,
+    borderWidth:1,
     width: "90%",
     height: 60,
     justifyContent: "center",

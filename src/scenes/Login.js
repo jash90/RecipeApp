@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import {Content, Container} from "native-base";
-import {Head} from "../components";
+import {
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    ScrollView
+} from 'react-native';
+import {Content, Container, Footer} from "native-base";
+import {Button, Logo, Head, Input} from "../components";
+import {Col, Grid, Row} from "react-native-easy-grid";
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -9,30 +17,29 @@ class Login extends Component {
     }
     render() {
         return (
-            <Container>
-                <Head
-                    right={true}
-                    icon={"person-add"}
-                    text={Language.get("sign")}
-                    onPress={() => Actions.Register()}/>
-                <View style={styles.fullStyle}>
-                    <View>
-                        <Logo size={150}/>
-                        <Input
-                            placeholder={Language.get("email")}
-                            onChangeText={text => this.setState({email: text})}
-                            value={this.state.email}/>
-                        <Input
-                            placeholder={Language.get("password")}
-                            secureTextEntry={true}
-                            onChangeText={text => this.setState({password: text})}
-                            value={this.state.password}/>
-                    </View>
-                    <Content contentContainerStyle={styles.buttonContener}>
-                        <Button text={Language.get("login")} onPress={() => this.login()}/>
-                    </Content>
-                </View>
-            </Container>
+            <ScrollView
+                style={{
+                flex: 1
+            }}
+                contentContainerStyle={{
+                flex: 1,
+                justifyContent: "flex-end"
+            }}>
+
+                <Logo size={150}/>
+
+                <Input placeholder={"text"}/>
+                <Input placeholder={"text"}/>
+                {/* <View
+                    style={{
+                    flex: 1,
+                    marginTop:50
+                }}> */}
+                    <Button text={"jhgsdfh"}/>
+                    <Button text={"jhgsdfh"}/>
+                {/* </View> */}
+
+            </ScrollView>
         );
     }
 }
@@ -44,7 +51,7 @@ var styles = StyleSheet.create({
     buttonContener: {
         width: "100%",
         flex: 1,
-        justifyContent: "space-evenly",
+        justifyContent: "flex-end",
         alignItems: "center"
     }
 });

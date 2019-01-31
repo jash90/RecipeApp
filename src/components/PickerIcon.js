@@ -8,7 +8,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
 import _ from "lodash";
 
-import Color from "../../Color";
+import Color from "../Color";
 
 export default class PickerIcon extends Component {
   constructor(props) {

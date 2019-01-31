@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
-import Color from "../../Color";
+import Color from "../Color";
 
 export default class Fab extends Component {
   render() {

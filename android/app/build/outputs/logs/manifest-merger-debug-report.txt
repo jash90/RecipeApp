@@ -4,6 +4,7 @@ ADDED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml:1:
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml:1:1-27:12
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml:1:1-27:12
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml:1:1-27:12
+MERGED from [:react-native-linear-gradient] D:\React Native\recipeapp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-vector-icons] D:\React Native\recipeapp\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-11:12
 MERGED from [com.facebook.react:react-native:0.58.3] C:\Users\ZimnY\.gradle\caches\transforms-1\files-1.1\react-native-0.58.3.aar\e94ccf810e7996fbcd2fc69fffe24089\AndroidManifest.xml:2:1-15:12
 MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\ZimnY\.gradle\caches\transforms-1\files-1.1\appcompat-v7-28.0.0.aar\2533359c8243b3129bf0a762dc99812e\AndroidManifest.xml:17:1-22:12
@@ -121,6 +122,8 @@ uses-sdk
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\React Native\recipeapp\android\app\src\main\AndroidManifest.xml
+MERGED from [:react-native-linear-gradient] D:\React Native\recipeapp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-linear-gradient] D:\React Native\recipeapp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] D:\React Native\recipeapp\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] D:\React Native\recipeapp\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [com.facebook.react:react-native:0.58.3] C:\Users\ZimnY\.gradle\caches\transforms-1\files-1.1\react-native-0.58.3.aar\e94ccf810e7996fbcd2fc69fffe24089\AndroidManifest.xml:7:5-9:41

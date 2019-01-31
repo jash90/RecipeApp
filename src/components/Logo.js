@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
-import Color from "../../Color";
+import Color from "../Color";
 
 export default class Logo extends Component {
   constructor(props) {
@@ -26,8 +26,8 @@ export default class Logo extends Component {
         }}
       >
         <TouchableOpacity>
-          <Icon
-            name={"md-bus"}
+          <MaterialIcons
+            name={"room-service"}
             style={{
               paddingLeft: 10,
               paddingRight: 10,

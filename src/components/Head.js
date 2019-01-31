@@ -17,7 +17,7 @@ import {
 
 import { Actions } from "react-native-router-flux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Color from "../../Color";
+import Color from "../Color";
 
 export default class Head extends Component {
   render() {
