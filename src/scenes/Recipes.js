@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-import {Content, Container, Footer} from "native-base";
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList
+} from 'react-native';
+import {Content, Container} from "native-base";
 import {Head} from "../components";
 import Color from "../Color";
 
@@ -27,7 +34,7 @@ export default class Recipes extends Component {
         this.setState({recipes: data.data.recipes});
       });
   }
-  
+
   renderIngredient(item) {
     const styleTag = _.find(this.props.ingredients, {id: item.id})
       ? styles.selectedTag
@@ -46,7 +53,7 @@ export default class Recipes extends Component {
       <TouchableOpacity onPress={() => Actions.Recipe({recipe: item})}>
         <View style={styles.recipe}>
           <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.content}>{String(item.content).substring(0, 50) + "..."}</Text>
+          <Text style={styles.content}>{`Czas trwania : ${item.preparationTime}min`}</Text>
           <FlatList
             horizontal
             contentContainerStyle={styles.ingredientList}
@@ -62,7 +69,7 @@ export default class Recipes extends Component {
       <Container>
         <Head text={"Coś na ząb"}/>
         <Content contentContainerStyle={styles.container}>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView contentContainerStyle={styles.scrollView}>
             <FlatList
               horizontal
               scrollEventThrottle={1900}
@@ -72,7 +79,6 @@ export default class Recipes extends Component {
               renderItem={({item}) => this.renderTag(item)}/>
             <FlatList
               data={this.state.recipes}
-              contentContainerStyle={styles.recipeList}
               renderItem={({item}) => this.renderRecipe(item)}/>
           </ScrollView>
         </Content>

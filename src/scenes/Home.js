@@ -5,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  FlatList
+  FlatList,
+  ScrollView
 } from 'react-native';
 import {Content, Container} from "native-base";
 import {Head} from "../components";
@@ -28,7 +29,7 @@ export default class Home extends Component {
     api
       .ingredients()
       .then(data => {
-        this.setState({ingredients: data.data});
+        this.setState({ingredients: data.data.data});
       })
   }
   render() {
@@ -36,7 +37,7 @@ export default class Home extends Component {
       <Container>
         <Head text={"Coś na ząb"}/>
         <Content contentContainerStyle={styles.content}>
-          <View style={styles.contenerList}>
+          <ScrollView style={styles.contenerList}>
             <FlatList
               scrollEventThrottle={1900}
               extraData={this.state.searchings}
@@ -48,12 +49,12 @@ export default class Home extends Component {
               .filter((ingredient) => this.filterIngredients(ingredient))}
               contentContainerStyle={styles.list}
               renderItem={({item}) => this.renderTag(item)}/>
-          </View>
+          </ScrollView>
           <View style={styles.footer}>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.search}
-                placeholder="ingredient"
+                placeholder="filtruj składniki"
                 value={this.state.ingredient}
                 onChangeText={text => this.setState({ingredient: text})}/>
               <TouchableOpacity onPress={() => this.nextScene()}>

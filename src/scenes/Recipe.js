@@ -31,6 +31,7 @@ export default class Recipe extends Component {
                             contentContainerStyle={styles.list}
                             renderItem={({item}) => this.renderTag(item)}/>
                         <View>
+                            <Text style={styles.content}>{`Czas trwania : ${this.props.recipe.preparationTime}min`}</Text>
                             <Text style={styles.content}>{this.props.recipe.content}</Text>
                         </View>
                     </ScrollView>
