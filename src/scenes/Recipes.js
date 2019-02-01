@@ -1,30 +1,16 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  AsyncStorage
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
 import {Content, Container, Footer} from "native-base";
-import {Button, Logo, Head, Input} from "../components";
-import {Col, Grid, Row} from "react-native-easy-grid";
+import {Head} from "../components";
 import Color from "../Color";
 
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import EStyleSheet from 'react-native-extended-stylesheet';
 import _ from 'lodash';
 import api from "../api";
-import axios from "axios";
 export default class Recipes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      variable: 1,
       recipes: []
     };
   }
@@ -38,11 +24,11 @@ export default class Recipes extends Component {
     api
       .getByIngredients(ingredients)
       .then(data => {
-        console.log(data.data);
         this.setState({recipes: data.data.recipes});
       });
   }
-  renderRenderIngredient(item) {
+  
+  renderIngredient(item) {
     const styleTag = _.find(this.props.ingredients, {id: item.id})
       ? styles.selectedTag
       : styles.tag;
@@ -55,36 +41,17 @@ export default class Recipes extends Component {
     );
   }
 
-  renderRenderRecipe(item) {
+  renderRecipe(item) {
     return (
-      <TouchableOpacity onPress={()=>Actions.Recipe({recipe:item})}>
-        <View
-          style={{
-          flex: 1,
-          borderColor: Color.primaryColor,
-          borderWidth: 1,
-          borderRadius: 10,
-          padding: 5,
-          margin: 5
-        }}>
-          <Text
-            style={{
-            fontWeight: "bold",
-            fontSize: 22
-          }}>{item.name}</Text>
-          <Text
-            style={{
-            fontWeight: "bold",
-            fontSize: 16
-          }}>{String(item.content).substring(0, 50) + "..."}</Text>
+      <TouchableOpacity onPress={() => Actions.Recipe({recipe: item})}>
+        <View style={styles.recipe}>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.content}>{String(item.content).substring(0, 50) + "..."}</Text>
           <FlatList
             horizontal
-            contentContainerStyle={{
-            width: '100%',
-            flexWrap: 'wrap'
-          }}
+            contentContainerStyle={styles.ingredientList}
             data={_.take(item.ingredients, 5)}
-            renderItem={({item}) => this.renderRenderIngredient(item)}/>
+            renderItem={({item}) => this.renderIngredient(item)}/>
         </View>
       </TouchableOpacity>
     );
@@ -94,37 +61,20 @@ export default class Recipes extends Component {
     return (
       <Container>
         <Head text={"Coś na ząb"}/>
-        <Content
-          contentContainerStyle={{
-          width: "100%",
-          height: "100%"
-        }}>
-          <View
-            style={{
-            alignItems: "flex-start",
-            justifyContent: "flex-start"
-          }}>
-
+        <Content contentContainerStyle={styles.container}>
+          <ScrollView style={styles.scrollView}>
             <FlatList
               horizontal
               scrollEventThrottle={1900}
               data={this.props.ingredients}
               keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={{
-              width: '100%',
-              flexWrap: 'wrap'
-            }}
+              contentContainerStyle={styles.tagList}
               renderItem={({item}) => this.renderTag(item)}/>
             <FlatList
               data={this.state.recipes}
-              contentContainerStyle={{
-              width: "100%"
-            }}
-              renderItem={({item}) => this.renderRenderRecipe(item)}/>
-          </View>
-          {/* <View style={{position:"absolute", bottom:20, right:20, width:50, height:50, backgroundColor:"red"}}>
-
-          </View> */}
+              contentContainerStyle={styles.recipeList}
+              renderItem={({item}) => this.renderRecipe(item)}/>
+          </ScrollView>
         </Content>
       </Container>
     );
@@ -149,24 +99,12 @@ export default class Recipes extends Component {
     );
   }
 
-  add() {
-    this.setState({
-      variable: this.state.variable + 1
-    });
-  }
-
-  remove() {
-    this.setState({
-      variable: this.state.variable - 1
-    });
-  }
-
   nextScene() {
     Actions.Recipes({ingredients: this.state.searchings});
   }
+
   toggleIngredient(ingredient) {
     const index = _.indexOf(this.state.searchings, ingredient);
-    // console.log(index);
     if (index > -1) {
       const array = this.state.searchings;
       array.splice(index, 1);
@@ -174,35 +112,47 @@ export default class Recipes extends Component {
     } else {
       const array = this.state.searchings;
       array.push(ingredient);
-      console.log(array);
       this.setState({searchings: array});
-      //console.log(array);
     }
   }
 }
 
 const styles = StyleSheet.create({
-  list: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start'
+  recipe: {
+    flex: 1,
+    borderColor: Color.primaryColor,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 5,
+    margin: 5
   },
-  searchContainer: {
+  content: {
+    fontSize: 16
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 22
+  },
+  ingredientList: {
     width: '100%',
-    flexDirection: 'row'
+    flexWrap: 'wrap'
+  },
+  recipeList: {
+    width: "100%"
+  },
+  tagList: {
+    width: '100%',
+    flexWrap: 'wrap'
+  },
+  scrollView: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start"
   },
   container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end'
+    width: "100%",
+    height: "100%"
   },
-  textInputContainer: {
-    flex: 1,
-    borderColor: 'black',
-    borderRadius: 20,
-    borderWidth: 2,
-    backgroundColor: 'white'
-  },
+
   icon: {
     fontSize: 40,
     color: 'red'

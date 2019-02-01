@@ -2,17 +2,12 @@ import React, { Component } from "react";
 import { TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 
 import {
-  Container,
   Header,
   Title,
-  Content,
-  Fab,
-  FooterTab,
   Left,
   Right,
   Body,
   Icon,
-  Text
 } from "native-base";
 
 import { Actions } from "react-native-router-flux";
