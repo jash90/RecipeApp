@@ -2,25 +2,20 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
-  FlatList,
-  StatusBar
+  ScrollView,
+  FlatList
 } from 'react-native';
+import {Content, Container, Footer} from "native-base";
+import {Button, Logo, Head, Input} from "../components";
+import {Col, Grid, Row} from "react-native-easy-grid";
+import Color from "../Color";
+
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Right,
-  Button,
-  Title
-} from 'native-base';
-
 import _ from 'lodash';
 import api from "../api";
 import axios from "axios";
@@ -37,50 +32,73 @@ export default class Home extends Component {
     api
       .ingredients()
       .then(data => {
-        this.setState({ingredients:data.data});
+        this.setState({ingredients: data.data});
       })
   }
   render() {
     return (
       <Container>
-        <Header // androidStatusBarColor="pink"
-        >
-          <Left/>
-          <Body>
-            <Title>Header</Title>
-          </Body>
-          <Right>
-            <Button transparent onPress={() => {Actions.Login();}}>
-              <Icon name="person" size={30} color="white"/>
-            </Button>
-          </Right>
-        </Header>
-        <View style={styles.container}>
-          <FlatList
-            scrollEventThrottle={1900}
-            extraData={this.state.searchings}
-            horizontal
-            keyExtractor={(item, index) => index.toString()}
-            data={this.state.ingredients}
-            contentContainerStyle={{
-            width: '100%',
-            flexWrap: 'wrap'
-          }}
-            renderItem={({item}) => this.renderTag(item)}/>
-          <View style={styles.searchContainer}>
-            <View style={styles.textInputContainer}>
+        <Head
+          text={"Coś na ząb"}
+          right
+          onPress={() => {
+          Actions.Register();
+        }}
+          icon={"person"}/>
+        <Content
+          contentContainerStyle={{
+          width: "100%",
+          height: "100%"
+        }}>
+          <View style={{
+            flex: 8
+          }}>
+            <FlatList
+              scrollEventThrottle={1900}
+              extraData={this.state.searchings}
+              horizontal
+              keyExtractor={(item, index) => index.toString()}
+              data={this.state.ingredients}
+              contentContainerStyle={{
+              width: '100%',
+              flexWrap: 'wrap'
+            }}
+              renderItem={({item}) => this.renderTag(item)}/>
+          </View>
+          <View
+            style={{
+            width: "100%",
+            height: 70,
+            flexDirection: "row",
+            justifyContent: "center"
+          }}>
+            <View
+              style={{
+              height: 60,
+              flex: 1,
+              marginHorizontal: 5,
+              borderColor: Color.primaryColor,
+              borderRadius: 50,
+              borderWidth: 2,
+              backgroundColor: 'white',
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row"
+            }}>
               <TextInput
+              style={{paddingHorizontal:10, fontSize:16}}
                 placeholder="ingredient"
                 value={this.state.ingredient}
                 onChangeText={text => this.setState({ingredient: text})}/>
+              <TouchableOpacity onPress={() => this.nextScene()}>
+                <View style={styles.iconContainer}>
+                  <Icon name="search" style={styles.icon}/>
+                </View>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => this.nextScene()}>
-              <View style={styles.iconContainer}>
-                <Icon name="search" style={styles.icon}/>
-              </View>
-            </TouchableOpacity>
+
           </View>
-        </View>
+        </Content>
       </Container>
     );
   }
@@ -144,27 +162,24 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     width: '100%',
+    flex: 1,
     flexDirection: 'row'
   },
   container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end'
+    flex: 1
   },
-  textInputContainer: {
-    flex: 1,
-    borderColor: 'black',
-    borderRadius: 20,
-    borderWidth: 2,
-    backgroundColor: 'white'
-  },
+  textInputContainer: {},
   icon: {
-    fontSize: 40,
-    color: 'red'
+    fontSize: 45,
+    color: 'white'
   },
   iconContainer: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+    borderColor: Color.primaryColor,
+    backgroundColor: Color.primaryColor,
+    borderRadius: 360,
     justifyContent: 'center',
     alignItems: 'center'
   },

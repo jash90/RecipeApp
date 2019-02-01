@@ -10,6 +10,7 @@ import {
 import {Content, Container, Footer} from "native-base";
 import {Button, Logo, Head, Input} from "../components";
 import {Col, Grid, Row} from "react-native-easy-grid";
+import Color from "../Color";
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -17,29 +18,20 @@ class Login extends Component {
     }
     render() {
         return (
-            <ScrollView
-                style={{
-                flex: 1
-            }}
-                contentContainerStyle={{
-                flex: 1,
-                justifyContent: "flex-end"
-            }}>
-
+            <Container>
+                <Head text={"Coś na ząb"}/>
+                <Content>
                 <Logo size={150}/>
-
-                <Input placeholder={"text"}/>
-                <Input placeholder={"text"}/>
-                {/* <View
-                    style={{
-                    flex: 1,
-                    marginTop:50
-                }}> */}
-                    <Button text={"jhgsdfh"}/>
-                    <Button text={"jhgsdfh"}/>
-                {/* </View> */}
-
-            </ScrollView>
+                    <View>
+                        <Input placeholder="login"/>
+                        <Input placeholder="hasło" />
+                    </View>
+                        <View style={{width:"100%", height:250, justifyContent:"space-evenly"}}>
+                            <Button text={"Zaloguj"}/>
+                            <Button text={"Rejestacja"} backgroundColor="white" colorText={Color.primaryColor} style={{borderColor:Color.primaryColor,borderWidth:1}}/>
+                    </View>
+                </Content>
+            </Container>
         );
     }
 }

@@ -22,7 +22,7 @@ export default class Logo extends Component {
           justifyContent: "center",
           alignItems: "center",
           alignSelf: "center",
-          margin: 10
+          margin: 20
         }}
       >
         <TouchableOpacity>

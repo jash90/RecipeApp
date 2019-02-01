@@ -7,8 +7,10 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
-import {Content, Container} from "native-base";
-import {Button, Logo, Head, Input} from "../components";
+import { Content, Container, Footer } from "native-base";
+import { Button, Logo, Head, Input } from "../components";
+import { Col, Grid, Row } from "react-native-easy-grid";
+import Color from "../Color";
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -16,19 +18,32 @@ class Register extends Component {
     }
     render() {
         return (
-            <View
-                style={{
-                flex: 120,
-                justifyContent: "center"
-            }}>
-
-                <Logo size={150}/>
-                <Input placeholder={"text"}/>
-                <Input placeholder={"text"}/>
-                <Input placeholder={"text"}/>
-                <Button text={"register"}/>
-
-            </View>
+            <Container>
+                <Head text={"Rejestracja"} back/>
+                <Content>
+                    <Logo size={50} />
+                    <View>
+                        <Input placeholder="login" />
+                        <Input placeholder="hasło" />
+                        <Input placeholder="powtórz hasło" />
+                    </View>
+                    <View
+                        style={{
+                            width: "100%",
+                            height: 250,
+                            justifyContent: "flex-end"
+                        }}>
+                        <Button
+                            text={"Rejestacja"}
+                            backgroundColor="white"
+                            colorText={Color.primaryColor}
+                            style={{
+                                borderColor: Color.primaryColor,
+                                borderWidth: 1
+                            }} />
+                    </View>
+                </Content>
+            </Container>
         );
     }
 }
