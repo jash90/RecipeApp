@@ -19,6 +19,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import _ from 'lodash';
 import api from "../api";
 import axios from "axios";
+import Login from './Login';
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -37,83 +38,99 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <Container>
-        <Head
-          text={"Coś na ząb"}
-          right
-          onPress={() => {
-          Actions.Register();
-        }}
-          icon={"person"}/>
-        <Content
-          contentContainerStyle={{
-          width: "100%",
-          height: "100%"
-        }}>
-          <View style={{
-            flex: 8
-          }}>
-            <FlatList
-              scrollEventThrottle={1900}
-              extraData={this.state.searchings}
-              horizontal
-              keyExtractor={(item, index) => index.toString()}
-              data={this.state.ingredients}
-              contentContainerStyle={{
-              width: '100%',
-              flexWrap: 'wrap'
+          <Container>
+            <Head
+              text={"Coś na ząb"}
+              right
+              onPress={() => {
+              Actions.Login();
             }}
-              renderItem={({item}) => this.renderTag(item)}/>
-          </View>
-          <View
-            style={{
-            width: "100%",
-            height: 70,
-            flexDirection: "row",
-            justifyContent: "center"
-          }}>
-            <View
-              style={{
-              height: 60,
-              flex: 1,
-              marginHorizontal: 5,
-              borderColor: Color.primaryColor,
-              borderRadius: 50,
-              borderWidth: 2,
-              backgroundColor: 'white',
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row"
+              icon={"person"}/>
+            <Content
+              contentContainerStyle={{
+              width: "100%",
+              height: "100%"
             }}>
-              <TextInput
-              style={{paddingHorizontal:10, fontSize:16}}
-                placeholder="ingredient"
-                value={this.state.ingredient}
-                onChangeText={text => this.setState({ingredient: text})}/>
-              <TouchableOpacity onPress={() => this.nextScene()}>
-                <View style={styles.iconContainer}>
-                  <Icon name="search" style={styles.icon}/>
+              <View style={{
+                flex: 8
+              }}>
+                <FlatList
+                  scrollEventThrottle={1900}
+                  extraData={this.state.searchings}
+                  horizontal
+                  keyExtractor={(item, index) => index.toString()}
+                  data={this
+                  .state
+                  .ingredients
+                  .filter((ingredient) => this.filterIngredients(ingredient))}
+                  contentContainerStyle={{
+                  width: "100%",
+                  flexWrap: 'wrap'
+                }}
+                  renderItem={({item}) => this.renderTag(item)}/>
+              </View>
+              <View
+                style={{
+                width: "100%",
+                height: 70,
+                flexDirection: "row",
+                justifyContent: "center"
+              }}>
+                <View
+                  style={{
+                  height: 60,
+                  flex: 1,
+                  marginHorizontal: 5,
+                  borderColor: Color.primaryColor,
+                  borderRadius: 50,
+                  borderWidth: 2,
+                  backgroundColor: 'white',
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}>
+                  <TextInput
+                    style={{
+                    paddingHorizontal: 10,
+                    fontSize: 16
+                  }}
+                    placeholder="ingredient"
+                    value={this.state.ingredient}
+                    onChangeText={text => this.setState({ingredient: text})}/>
+                  <TouchableOpacity onPress={() => this.nextScene()}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="search" style={styles.icon}/>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
 
-          </View>
-        </Content>
-      </Container>
+              </View>
+            </Content>
+          </Container>
     );
   }
-
+  filterIngredients(ingredient) {
+    if (this.state.ingredient) {
+      return String(ingredient.name)
+        .toLowerCase()
+        .includes(this.state.ingredient.toLowerCase());
+    }
+    return true;
+  }
   renderTag(item) {
     const index = _.indexOf(this.state.searchings, item);
     let styleTag = styles.selectedTag;
+    let color = "white";
     if (index < 0) {
       styleTag = styles.tag;
+      color = Color.primaryColor;
     }
     return (
       <TouchableOpacity onPress={() => this.toggleIngredient(item)}>
         <View style={styleTag}>
           <Text style={{
-            fontSize: 18
+            fontSize: 18,
+            color
           }}>{item.name}</Text>
         </View>
       </TouchableOpacity>
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: 'rgb(22,34,55)',
+    borderColor: Color.primaryColor,
     backgroundColor: 'white'
   },
   selectedTag: {
@@ -206,7 +223,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: 'rgb(22,34,55)',
-    backgroundColor: 'red'
+    borderColor: Color.primaryColor,
+    backgroundColor: Color.primaryColor
   }
 });

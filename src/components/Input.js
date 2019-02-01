@@ -12,6 +12,7 @@ export default class Input extends Component {
         onChangeText={text => this.props.onChangeText(text)}
         value={this.props.value}
         style={styles.textInputStyle}
+        keyboardType={this.props.keyboardType}
       />
     );
   }

@@ -33,5 +33,12 @@ export default {
         return api.get("/ingredientsByName", {params: {
                 name
             }});
+    },
+    login:function(username,password){
+        return api.post("/login",{username, password});
+    },
+    register: function (username, password) {
+        return api.post("/register", { username, password });
     }
+
 };
