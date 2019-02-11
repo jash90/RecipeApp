@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     height: 60,
-    flex: 1,
+    width:"100%",
     marginHorizontal: 5,
     borderColor: Color.primaryColor,
     borderRadius: 50,
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   search: {
+    width:"80%",
     paddingHorizontal: 10,
     fontSize: 16
   },

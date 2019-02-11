@@ -1,4 +1,4 @@
-package com.recipeapp;
+package com.recipeApp;
 
 import com.facebook.react.ReactActivity;
 

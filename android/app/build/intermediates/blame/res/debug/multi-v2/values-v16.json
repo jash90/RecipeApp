@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\React Native\\recipeapp\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
+            "outputFile": "/Users/a1398/recipeapp/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ZimnY\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-28.0.0.aar\\e3aaa61044c1cd20e526dfd9d7b17983\\res\\values-v16\\values-v16.xml",
+                    "source": "/Users/a1398/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/fc844e7ccc9b466bd3019e3d6b13b8c1/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ZimnY\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\2533359c8243b3129bf0a762dc99812e\\res\\values-v16\\values-v16.xml",
+                    "source": "/Users/a1398/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/ea7c41c52ee4c2ecb6a261d76a8945c1/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
