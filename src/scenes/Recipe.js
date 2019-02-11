@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 import {Content, Container} from "native-base";
 import {Head} from "../components";
 import Color from "../Color";
-
+import EStyleSheet from "react-native-extended-stylesheet";
 import {Actions} from 'react-native-router-flux';
 import _ from 'lodash';
 
@@ -63,7 +63,7 @@ export default class Recipe extends Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     recipe: {
         flex: 1,
         borderColor: Color.primaryColor,

@@ -11,6 +11,7 @@ import {
 import {Content, Container} from "native-base";
 import {Head} from "../components";
 import Color from "../Color";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -114,7 +115,7 @@ export default class Home extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   contenerList: {
     flex: 8
   },
