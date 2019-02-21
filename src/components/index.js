@@ -6,5 +6,5 @@ export {
     Button,
     Head,
     Input,
-    Logo,
+    Logo
 };

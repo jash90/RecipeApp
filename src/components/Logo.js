@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
-import { Icon } from "native-base";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
-import Color from "../Color";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 export default class Logo extends Component {
   constructor(props) {
@@ -14,7 +13,7 @@ export default class Logo extends Component {
   render() {
     return (
       <LinearGradient
-        colors={[Color.primaryColor, Color.accentColor]}
+        colors={[EStyleSheet.value('$primaryColor'), EStyleSheet.value('$accentColor')]}
         style={{
           borderRadius: 20,
           width: this.props.size,

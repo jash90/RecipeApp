@@ -1,112 +1,175 @@
-import React, {Component} from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList
-} from 'react-native';
-import {Content, Container} from "native-base";
-import {Head} from "../components";
-import Color from "../Color";
-import EStyleSheet from "react-native-extended-stylesheet";
-import {Actions} from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { Content, Container } from 'native-base';
+import { Head } from '../components';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { Actions } from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import _ from 'lodash';
-import api from "../api";
+import api from '../api';
 export default class Recipes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipes: []
+      recipes: [],
+      refresh: false,
+      seletedIngredients: [],
+      ingredients: []
     };
   }
   componentDidMount() {
-    const ingredients = this
-      .props
-      .ingredients
-      .map(element => {
-        return element.id;
-      });
-    api
-      .getByIngredients(ingredients)
-      .then(data => {
-        this.setState({recipes: data.data.recipes});
-      });
+    this.getRecipe();
+    this.getIngredients();
   }
 
+  getRecipe = () => {
+    api.recipes().then(data => {
+      this.setState({ recipes: data.data.recipes });
+    });
+  };
+
+  getIngredients = () => {
+    api.ingredients().then(data => {
+      this.setState({ seletedIngredients: data.data.data });
+    });
+  };
+
+  refreshData = () => {
+    this.setState({ refresh: true });
+    this.getRecipe();
+    this.setState({ refresh: false });
+  };
+
   renderIngredient(item) {
-    const styleTag = _.find(this.props.ingredients, {id: item.id})
-      ? styles.selectedTag
-      : styles.tag;
     return (
-      <View style={styleTag}>
-        <Text style={{
-          color: Color.primaryColor
-        }}>{item.name}</Text>
+      <View style={styles.tag}>
+        <Text
+          style={{
+            color: EStyleSheet.value('$primaryColor')
+          }}>
+          {item.name}
+        </Text>
       </View>
     );
   }
 
   renderRecipe(item) {
     return (
-      <TouchableOpacity onPress={() => Actions.Recipe({recipe: item})}>
-        <View style={styles.recipe}>
+      <View style={styles.recipe}>
+        <TouchableOpacity onPress={() => Actions.Recipe({ recipe: item })}>
           <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.content}>{`Czas trwania : ${item.preparationTime}min`}</Text>
-          <FlatList
-            horizontal
-            contentContainerStyle={styles.ingredientList}
-            data={_.take(item.ingredients, 5)}
-            renderItem={({item}) => this.renderIngredient(item)}/>
+          <Text style={styles.content}>
+            {`Czas trwania : ${item.preparationTime}min`}
+          </Text>
+        </TouchableOpacity>
+        <FlatList
+          horizontal
+          contentContainerStyle={styles.ingredientList}
+          data={_.take(item.ingredients, 5)}
+          renderItem={({ item }) => this.renderIngredient(item)}
+          keyExtractor={(item, index) => {
+            return String(index);
+          }}
+        />
+      </View>
+    );
+  }
+
+  renderHeader() {
+    // const active =
+    //   this.state.seletedIngredients.length > 0 ? 'filter' : 'filter-outline';
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'white',
+          marginBottom: 10
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            padding: 10
+          }}>
+          <Text
+            style={{
+              color: EStyleSheet.value('$primaryColor'),
+              fontSize: 22
+            }}>
+            Składniki :
+          </Text>
+          <Icon
+            name={'filter'}
+            size={30}
+            color={EStyleSheet.value('$primaryColor')}
+          />
         </View>
-      </TouchableOpacity>
+
+        <FlatList
+          horizontal
+          contentContainerStyle={[styles.tagList]}
+          data={_.take(this.state.seletedIngredients, 4)}
+          renderItem={({ item }) => this.renderIngredient(item)}
+          ListEmptyComponent={() =>
+            this.renderIngredient({ name: 'wybierz składniki ...' })
+          }
+          ListFooterComponent={() => {
+            if (this.state.seletedIngredients.length > 4) {
+              return this.renderIngredient({ name: '...' });
+            }
+            return null;
+          }}
+        />
+      </View>
     );
   }
 
   render() {
     return (
       <Container>
-        <Head text={"Coś na ząb"}/>
+        <Head text={'Coś na ząb'} />
         <Content contentContainerStyle={styles.container}>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <FlatList
-              horizontal
-              scrollEventThrottle={1900}
-              data={this.props.ingredients}
-              keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={styles.tagList}
-              renderItem={({item}) => this.renderTag(item)}/>
-            <FlatList
-              data={this.state.recipes}
-              renderItem={({item}) => this.renderRecipe(item)}/>
-          </ScrollView>
+          <FlatList
+            ListHeaderComponent={() => this.renderHeader()}
+            refreshing={this.state.refresh}
+            onRefresh={() => this.refreshData()}
+            data={this.state.recipes}
+            renderItem={({ item }) => this.renderRecipe(item)}
+            keyExtractor={(item, index) => {
+              return String(index);
+            }}
+          />
         </Content>
       </Container>
     );
   }
+
   renderTag(item) {
     const index = _.indexOf(this.props.ingredients, item);
     let styleTag = styles.selectedTag;
-    let color = "white";
+    let color = 'white';
     if (index < 0) {
       styleTag = styles.tag;
-      color = Color.primaryColor;
+      color = EStyleSheet.value('$primaryColor');
     }
     return (
       <TouchableOpacity onPress={() => this.toggleIngredient(item)}>
         <View style={styleTag}>
-          <Text style={{
-            fontSize: 18,
-            color
-          }}>{item.name}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              color
+            }}>
+            {item.name}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   }
 
   nextScene() {
-    Actions.Recipes({ingredients: this.state.searchings});
+    Actions.Recipes({ ingredients: this.state.searchings });
   }
 
   toggleIngredient(ingredient) {
@@ -114,11 +177,11 @@ export default class Recipes extends Component {
     if (index > -1) {
       const array = this.state.searchings;
       array.splice(index, 1);
-      this.setState({searchings: array});
+      this.setState({ searchings: array });
     } else {
       const array = this.state.searchings;
       array.push(ingredient);
-      this.setState({searchings: array});
+      this.setState({ searchings: array });
     }
   }
 }
@@ -126,7 +189,7 @@ export default class Recipes extends Component {
 const styles = EStyleSheet.create({
   recipe: {
     flex: 1,
-    borderColor: Color.primaryColor,
+    borderColor: '$primaryColor',
     borderWidth: 1,
     borderRadius: 10,
     padding: 5,
@@ -136,7 +199,7 @@ const styles = EStyleSheet.create({
     fontSize: 16
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 22
   },
   ingredientList: {
@@ -144,19 +207,19 @@ const styles = EStyleSheet.create({
     flexWrap: 'wrap'
   },
   recipeList: {
-    width: "100%"
+    width: '100%'
   },
   tagList: {
     width: '100%',
     flexWrap: 'wrap'
   },
   scrollView: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start"
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   },
   container: {
-    width: "100%",
-    height: "100%"
+    width: '100%',
+    height: '100%'
   },
 
   icon: {
@@ -183,7 +246,7 @@ const styles = EStyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: Color.primaryColor,
+    borderColor: '$primaryColor',
     backgroundColor: 'white'
   },
   selectedTag: {
@@ -192,7 +255,7 @@ const styles = EStyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: Color.primaryColor,
-    backgroundColor: Color.primaryColor
+    borderColor: '$primaryColor',
+    backgroundColor: '$primaryColor'
   }
 });

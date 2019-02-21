@@ -1,185 +1,109 @@
-import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  ScrollView
-} from 'react-native';
-import {Content, Container} from "native-base";
-import {Head} from "../components";
-import Color from "../Color";
-import EStyleSheet from "react-native-extended-stylesheet";
-
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { Component } from 'react';
+import { View, Text, Modal, TextInput, Dimensions} from 'react-native';
+import { Head } from '../components';
+import EStyleSheet from 'react-native-extended-stylesheet';
+//import Icon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
-import api from "../api";
+import api from '../api';
+import { Searching } from '../scenes';
+import { Header, Title, Left, Right, Body, Icon } from 'native-base';
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ingredients: [],
       ingredient: '',
-      searchings: []
+      searchings: [],
+      visible: false
     };
   }
   componentDidMount() {
-    api
-      .ingredients()
-      .then(data => {
-        this.setState({ingredients: data.data.data});
-      })
+    api.ingredients().then(data => {
+      this.setState({ ingredients: data.data.data });
+    });
   }
+
+  renderFooter() {
+    return (
+      <View
+        style={{
+          height: 80,
+          flexDirection: 'row',
+          backgroundColor: 'blue'
+        }}>
+        <View style={styles.tab}>
+          <Icon name="kitchen" size={30} color="white" />
+          <Text style={{ color: 'white', fontSize: 16 }}>Coś na ząb</Text>
+        </View>
+        <View style={styles.tab}>
+          <Icon name="book" size={32} color="white" style={{}} />
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+            Przepisy
+          </Text>
+        </View>
+        <View style={styles.tab}>
+          <Icon name="straighten" size={30} color="white" />
+          <Text style={{ color: 'white', fontSize: 16 }}>Przelicznik</Text>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     return (
-      <Container>
-        <Head text={"Coś na ząb"}/>
-        <Content contentContainerStyle={styles.content}>
-          <ScrollView style={styles.contenerList}>
-            <FlatList
-              scrollEventThrottle={1900}
-              extraData={this.state.searchings}
-              horizontal
-              keyExtractor={(item, index) => index.toString()}
-              data={this
-              .state
-              .ingredients
-              .filter((ingredient) => this.filterIngredients(ingredient))}
-              contentContainerStyle={styles.list}
-              renderItem={({item}) => this.renderTag(item)}/>
-          </ScrollView>
-          <View style={styles.footer}>
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.search}
-                placeholder="filtruj składniki"
-                value={this.state.ingredient}
-                onChangeText={text => this.setState({ingredient: text})}/>
-              <TouchableOpacity onPress={() => this.nextScene()}>
-                <View style={styles.iconContainer}>
-                  <Icon name="search" style={styles.icon}/>
+      <View style={{ flex: 1 }}>
+        {/* <Head
+          right
+          icon="search"
+          onPress={() => this.setState({ visible: true })}
+        /> */}
+          <Head
+              left
+              leftIcon="arrow-back"
+              leftPress={() => this.setState({ visible: false })}
+              content={
+                <View style={{width:Dimensions.get('window').width-110, backgroundColor:"white"}}>
+                <TextInput placeholder="Text"/>
                 </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Content>
-      </Container>
-    );
-  }
-  filterIngredients(ingredient) {
-    if (this.state.ingredient) {
-      return String(ingredient.name)
-        .toLowerCase()
-        .includes(this.state.ingredient.toLowerCase());
-    }
-    return true;
-  }
-  renderTag(item) {
-    const index = _.indexOf(this.state.searchings, item);
-    let styleTag = styles.selectedTag;
-    let color = "white";
-    if (index < 0) {
-      styleTag = styles.tag;
-      color = Color.primaryColor;
-    }
-    return (
-      <TouchableOpacity onPress={() => this.toggleIngredient(item)}>
-        <View style={styleTag}>
-          <Text style={{
-            fontSize: 18,
-            color
-          }}>{item.name}</Text>
+              }
+              right
+              rightIcon="search"
+            />
+        <View style={{ flex: 1 }}>
+          <Modal
+            visible={this.state.visible}
+            transparent={false}
+            animationType="slide">
+            <Head
+              left
+              leftIcon="arrow-back"
+              leftPress={() => this.setState({ visible: false })}
+              content={
+                <View style={{width:200, height:30, backgroundColor:"white"}}>
+                <TextInput placeholder="Text" style={{flex:1,}}/>
+                </View>
+              }
+            />
+          </Modal>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
-
-  nextScene() {
-    Actions.Recipes({ingredients: this.state.searchings});
-  }
-
-  toggleIngredient(ingredient) {
-    const index = _.indexOf(this.state.searchings, ingredient);
-    if (index > -1) {
-      const array = this.state.searchings;
-      array.splice(index, 1);
-      this.setState({searchings: array});
-    } else {
-      const array = this.state.searchings;
-      array.push(ingredient);
-      this.setState({searchings: array});
-    }
+  renderScene() {
+    return <Searching />;
   }
 }
 
 const styles = EStyleSheet.create({
-  contenerList: {
-    flex: 8
-  },
-  content: {
-    width: "100%",
-    height: "100%"
-  },
-  list: {
-    width: "100%",
-    flexWrap: 'wrap'
-  },
-  footer: {
-    width: "100%",
-    height: 70,
-    flexDirection: "row",
-    justifyContent: "center"
-  },
-  searchContainer: {
-    height: 60,
-    width:"100%",
-    marginHorizontal: 5,
-    borderColor: Color.primaryColor,
-    borderRadius: 50,
-    borderWidth: 2,
-    backgroundColor: 'white',
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row"
-  },
-  search: {
-    width:"80%",
-    paddingHorizontal: 10,
-    fontSize: 16
-  },
-  icon: {
-    fontSize: 45,
-    color: 'white'
-  },
-  iconContainer: {
-    width: 60,
-    height: 60,
-    borderWidth: 1,
-    borderColor: Color.primaryColor,
-    backgroundColor: Color.primaryColor,
-    borderRadius: 360,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  tag: {
-    justifyContent: 'center',
-    padding: 7,
-    margin: 5,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: Color.primaryColor,
-    backgroundColor: 'white'
-  },
-  selectedTag: {
-    justifyContent: 'center',
-    padding: 7,
-    margin: 5,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: Color.primaryColor,
-    backgroundColor: Color.primaryColor
+  styleHeader: { backgroundColor: '$primaryColor' },
+  textHeader: { flex: 3, justifyContent: 'center', alignItems: 'center' },
+  iconLeftHeader: { color: 'white', paddingLeft: 5 },
+  iconRightHeader: { paddingRight: 5 },
+  fullStyle: { flex: 1 },
+  tab: {
+    flex: 1,
+    backgroundColor: '$primaryColor',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });

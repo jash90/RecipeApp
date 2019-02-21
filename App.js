@@ -15,7 +15,7 @@ export default class App extends Component {
             <Stack key="root">
               <Scene key="Home" component={Home} hideNavBar />
               <Scene key="Recipe" component={Recipe} hideNavBar />
-              <Scene key="Recipes" component={Recipes} hideNavBar />
+              <Scene key="Recipes" component={Recipes} hideNavBar initial/>
             </Stack>
           </Router>
         </Provider>
