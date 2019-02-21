@@ -146,7 +146,7 @@ export default class Recipes extends Component {
   }
 
   renderTag(item) {
-    const index = _.indexOf(this.props.ingredients, item);
+    const index = _.indexOf(this.state.seletedIngredients, item);
     let styleTag = styles.selectedTag;
     let color = 'white';
     if (index < 0) {

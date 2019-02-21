@@ -8,9 +8,7 @@ import {
   FlatList,
   ScrollView
 } from 'react-native';
-import { Content, Container } from 'native-base';
-import { Head } from '../components';
-import Color from '../Color';
+import { Content } from 'native-base';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 import { Actions } from 'react-native-router-flux';
