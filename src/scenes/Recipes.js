@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  TextInput
+} from 'react-native';
 import { Content, Container } from 'native-base';
 import { Head } from '../components';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -14,7 +21,9 @@ export default class Recipes extends Component {
       recipes: [],
       refresh: false,
       seletedIngredients: [],
-      ingredients: []
+      ingredients: [],
+      visibleModal: false,
+      search: ''
     };
   }
   componentDidMount() {
@@ -41,11 +50,18 @@ export default class Recipes extends Component {
   };
 
   renderIngredient(item) {
+    const index = _.find(this.state.seletedIngredients, ['id', item.idIngredient]);
+    let styleTag = styles.selectedTag;
+    let color = 'white';
+    if (index) {
+      styleTag = styles.tag;
+      color = EStyleSheet.value('$primaryColor');
+    }
     return (
-      <View style={styles.tag}>
+      <View style={styleTag}>
         <Text
           style={{
-            color: EStyleSheet.value('$primaryColor')
+            color: color
           }}>
           {item.name}
         </Text>
@@ -76,8 +92,8 @@ export default class Recipes extends Component {
   }
 
   renderHeader() {
-    // const active =
-    //   this.state.seletedIngredients.length > 0 ? 'filter' : 'filter-outline';
+    const active =
+      this.state.seletedIngredients.length > 0 ? 'filter' : 'filter-outline';
     return (
       <View
         style={{
@@ -99,11 +115,14 @@ export default class Recipes extends Component {
             }}>
             Składniki :
           </Text>
-          <Icon
-            name={'filter'}
-            size={30}
-            color={EStyleSheet.value('$primaryColor')}
-          />
+          <TouchableOpacity
+            onPress={() => this.setState({ visibleModal: true })}>
+            <Icon
+              name={active}
+              size={30}
+              color={EStyleSheet.value('$primaryColor')}
+            />
+          </TouchableOpacity>
         </View>
 
         <FlatList
@@ -141,6 +160,75 @@ export default class Recipes extends Component {
             }}
           />
         </Content>
+        <Modal visible={this.state.visibleModal} transparent={true}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.7)',
+              justifyContent: 'space-around',
+              alignItems: 'center'
+            }}>
+            <View
+              style={{
+                width: '90%',
+                height: '70%',
+                backgroundColor: 'white',
+                borderRadius: 20,
+                padding: 5
+              }}>
+              <View
+                style={{
+                  width: '100%',
+                  height: 60,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+                }}>
+                <TouchableOpacity
+                  style={{
+                    height: 60,
+                    width: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                  onPress={() => this.setState({ visibleModal: false })}>
+                  <Icon
+                    name="arrow-left"
+                    size={30}
+                    color={EStyleSheet.value('$primaryColor')}
+                  />
+                </TouchableOpacity>
+                <View
+                  style={{
+                    height: 60,
+                    width: '85%',
+                    justifyContent: 'center'
+                  }}>
+                  <TextInput
+                    placeholder={'składnik'}
+                    style={{ fontSize: 22 }}
+                    value={this.state.search}
+                    onChangeText={text => this.setState({ search: text })}
+                  />
+                </View>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={{
+                width: '90%',
+                height: 60,
+                backgroundColor: EStyleSheet.value('$primaryColor'),
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: EStyleSheet.value('$primaryColor'),
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              onPress={() => this.setState({ visibleModal: false })}>
+              <Text style={{ color: 'white', fontSize: 22 }}>Filtruj</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </Container>
     );
   }
